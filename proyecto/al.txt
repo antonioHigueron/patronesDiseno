@@ -1,0 +1,6 @@
+1 jesus melero 100
+2 daniel martinez 400
+3 pepe garcia 200
+4 pedro sanchez 500
+5 antonio perez 300
+6 daniela vazquez 600
