@@ -37,15 +37,16 @@ public class Pruebas {
     public static void main(String[] args) throws IOException {
         //Scanner input = new Scanner(new File("D:\\proyectos\\piedad\\Ejercicios\\programacion12032023\\src\\main\\java\\ejercicio6\\clientes1_copy.txt"));
         Scanner input = new Scanner(new File("D:\\proyectos\\piedad\\Ejercicios\\programacion12032023\\src\\main\\java\\ejercicio6\\clientes1.txt"));
-        input.useDelimiter("-|\n");
+        //input.useDelimiter("-|\n");
+
         //Scanner input2 = new Scanner(new File("D:\\proyectos\\piedad\\Ejercicios\\programacion12032023\\src\\main\\java\\ejercicio6\\clientes2_copy.txt"));
         Scanner input2 = new Scanner(new File("D:\\proyectos\\piedad\\Ejercicios\\programacion12032023\\src\\main\\java\\ejercicio6\\clientes2.txt"));
-        input2.useDelimiter("-|\n");
+        //input2.useDelimiter("-|\n");
 
 
         ArrayList<Cliente> myList = new ArrayList<>();
-        myList = addClientFromFiles(input, myList);
-        myList = addClientFromFiles(input2, myList);
+        addClientFromFiles(input, myList);
+        addClientFromFiles(input2, myList);
 
         for (Cliente cliente : myList) {
             System.out.println(cliente);
@@ -53,8 +54,8 @@ public class Pruebas {
 
         FileWriter writer=null;
         try {
-            writer = new FileWriter(new File("D:\\proyectos\\piedad\\Ejercicios\\programacion12032023\\src\\main\\java\\ejercicio6\\final.txt"));
-            //writer = new FileWriter(new File("al.txt"));
+            //writer = new FileWriter(new File("D:\\proyectos\\piedad\\Ejercicios\\programacion12032023\\src\\main\\java\\ejercicio6\\final.txt"));
+            writer = new FileWriter(new File("al.txt"));
             for (Cliente cliente : myList) {
                 writer.write(cliente.getCliente());
                 writer.write("\n");
@@ -68,7 +69,7 @@ public class Pruebas {
         }
     }
 
-    private static ArrayList<Cliente> addClientFromFiles(Scanner input, ArrayList<Cliente> clientes) {
+    private static void addClientFromFiles(Scanner input, ArrayList<Cliente> clientes) {
         ArrayList<Cliente> list = null;
         while(input.hasNext()) {
             String[] valores = input.nextLine().split(" ");
@@ -79,23 +80,29 @@ public class Pruebas {
 
 
             Cliente nuevoCliente = new Cliente(id, nombre, apellido, numero);
-            list = addClient(clientes, nuevoCliente);
+            addClient(clientes, nuevoCliente);
         }
-        return list;
+
     }
 
-    private static ArrayList<Cliente> addClient(ArrayList<Cliente> clientes, Cliente cliente) {
+    private static void addClient(ArrayList<Cliente> clientes, Cliente cliente) {
         clientes.add(cliente);
+        /* //solucion 1
         Collections.sort(clientes,new Comparator<Cliente>() {
             @Override
             public int compare(Cliente s1, Cliente s2) {
                 return s1.getId().compareTo(s2.getId());
             }
-        });
-        return clientes;
+        });*/
+
+        //solucion 2
+        clientes.sort(cliente);
+
+
+
     }
 
-    public static class Cliente {
+    public static class Cliente implements Comparator {
         private int id;
         private String nombre;
         private String apellido;
@@ -121,6 +128,14 @@ public class Pruebas {
             //return "Cliente [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", numero=" + numero + "]";
             return String.format("ID: %d\r\nNombre: %s\r\nApellido: %s\r\nNumero: %s\r\n",
                     id, nombre, apellido, numero);
+        }
+
+
+        @Override
+        public int compare(Object o1, Object o2) {
+            Cliente c1 = (Cliente) o1;
+            Cliente c2 = (Cliente) o2;
+            return c1.getId() - c2.getId();
         }
     }
 }
